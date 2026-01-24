@@ -1,7 +1,6 @@
 package com.springAiTemplate.Chatbot.Controllers;
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/chat")
 public class ChatController{
-    @Autowired
-    @Qualifier("ollamaChatClient")
-    private ChatClient chatClient;
+
+    private final ChatClient chatClient;
+
+    public ChatController(@Qualifier("ollamaChatClient") ChatClient ollamaChatClient){
+        this.chatClient = ollamaChatClient;
+    }
     
-    @GetMapping("/chat/{q}")
+    @GetMapping("/{q}")
     public ResponseEntity<?> chatMethod(@PathVariable("q") String query){
         String response =  this.chatClient.prompt(query).call().content();
         return new ResponseEntity<>(response, HttpStatus.OK);

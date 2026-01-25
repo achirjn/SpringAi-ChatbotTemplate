@@ -9,7 +9,6 @@ public class ChatClientConfig {
 
     @Bean
     ChatClient ollamaChatClient(ChatClient.Builder builder){
-        return builder.defaultSystem(s -> s.text("You are a RAG chatbot for the company Investocks. Answer according to the rules ans regulations mentioned in the documents."))
-                .build();
+        return builder.build();
     }
 }

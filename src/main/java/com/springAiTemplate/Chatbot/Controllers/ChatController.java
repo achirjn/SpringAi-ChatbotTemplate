@@ -1,29 +1,33 @@
 package com.springAiTemplate.Chatbot.Controllers;
 
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.springAiTemplate.Chatbot.Services.ChatService;
+
+import reactor.core.publisher.Flux;
 
 
 
 @RestController
-@RequestMapping("/chat")
 public class ChatController{
 
-    private final ChatClient chatClient;
+    private final ChatService chatService;
 
-    public ChatController(@Qualifier("ollamaChatClient") ChatClient ollamaChatClient){
-        this.chatClient = ollamaChatClient;
+    public ChatController(ChatService chatService){
+        this.chatService = chatService;
     }
     
-    @GetMapping("/{q}")
+    @GetMapping("/chat/{q}")
     public ResponseEntity<?> chatMethod(@PathVariable("q") String query){
-        String response =  this.chatClient.prompt(query).call().content();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(this.chatService.getChatResponse(query), HttpStatus.OK);
+    }
+
+    @GetMapping("/stream-chat/{q}")
+    public ResponseEntity<Flux<String>> streamMethod(@PathVariable("q") String query){
+        return new ResponseEntity<>(this.chatService.getStreamResponse(query), HttpStatus.OK);
     }
 }

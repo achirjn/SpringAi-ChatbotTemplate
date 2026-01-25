@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.springAiTemplate.Chatbot.Services.ChatService;
 
+import reactor.core.publisher.Flux;
+
 @Service
 public class ChatServiceImpl implements ChatService{
 
@@ -17,6 +19,10 @@ public class ChatServiceImpl implements ChatService{
     @Override
     public String getChatResponse(String query) {
         return this.chatClient.prompt(query).call().content();
+    }
+    @Override
+    public Flux<String> getStreamResponse(String query) {
+        return this.chatClient.prompt(query).stream().content();
     }
 
 }

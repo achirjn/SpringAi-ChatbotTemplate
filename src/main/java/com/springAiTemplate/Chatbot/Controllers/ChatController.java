@@ -32,9 +32,9 @@ public class ChatController{
         return new ResponseEntity<>(this.chatService.getStreamResponse(query), HttpStatus.OK);
     }
 
-    // @GetMapping("/rag-chat/{q}/{cid}")
-    // public ResponseEntity<Flux<String>> ragChatbotMethod(@PathVariable("q") String query, @PathVariable("cid") String conversationId) {
-    //     return new ResponseEntity<>(this.chatService.getRagChatbotResponse(query, conversationId), HttpStatus.OK);
-    // }
+    @GetMapping("/rag-chat/{q}")
+    public ResponseEntity<Flux<String>> ragChatbotMethod(@PathVariable("q") String query) {
+        return new ResponseEntity<>(this.chatService.getRagChatbotResponse(query), HttpStatus.OK);
+    }
     
 }
